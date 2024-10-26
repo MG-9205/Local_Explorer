@@ -5,10 +5,10 @@ import { Button } from "flowbite-react";
 
 const Navbar = () => {
   return (
-    <nav className="bg-gradient-to-r from-[#0F0C29] via-[#302B63] to-[#24243E] text-white px-6 py-4 fixed top-0 left-0 w-full z-50">
+    <nav className="bg-gradient-to-r from-[#0F0C29] via-[#302B63] to-[#24243E] text-white px-6 py-4 fixed top-0 left-0 w-full z-50 h-[90px] ">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="text-2xl font-bold">
+        <Link to="/" className="text-2xl font-bold"> 
           <svg
             width="154"
             height="40"

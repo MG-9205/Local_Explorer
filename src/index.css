@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html,
+body {
+  margin: 0;
+  padding: 0;
+ 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+ 
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+body{
+    padding-top: 80px !important;
+}
+
+.circle-marker {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(25, 115, 232); /* Or any color you like */
+  border-radius: 50%;
+  border: 2px solid white;
+}
