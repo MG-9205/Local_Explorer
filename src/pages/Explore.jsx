@@ -71,7 +71,7 @@ export default function Explore() {
       <div
         className="grid 
     grid-cols-1
-    md:grid-cols-4  h-[100vh] w-[100%] bg-white py-2"
+    md:grid-cols-4  h-[100vh] w-[100%] bg-white "
       >
         <div className="p-3 z-0">
           <SearchBar onPlaceSelect={handlePlaceSelect} />

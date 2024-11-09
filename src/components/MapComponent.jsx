@@ -87,7 +87,7 @@ export default function MapComponent() {
   }, []);
 
   return (
-    <div className='max-w-[100vw] max-h-[100vh]'>
+    <div className='max-w-[100vw] max-h-[100vh] z-0'>
       <MapContainer center={center} zoom={zoomLevel} className="h-[100vh] w-[100vw] z-0">
         <TileLayer url={osm.maptiler.url} attribution={osm.maptiler.attribution} />
 

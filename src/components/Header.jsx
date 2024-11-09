@@ -1,11 +1,46 @@
 // src/components/Navbar.js
-import React from "react";
+import {useEffect} from "react";
 import { Link } from "react-router-dom";
 import { Button } from "flowbite-react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser, SignUpButton } from '@clerk/clerk-react';
 
 const Navbar = () => {
+  const { user } = useUser(); 
+  
+  const storeUserInfo = async () => {
+    if (user) {
+      const userData = {
+        clerkId: user.id,
+        email: user.emailAddresses[0].emailAddress, 
+      };
+console.log(userData)
+      try {
+        const response = await fetch('http://127.0.0.1:8787/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+          console.error('Failed to store user info');
+        } else {
+          console.log('User info stored successfully');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      storeUserInfo();
+    }
+  }, [user]);
   return (
-    <nav className="text-white px-6 py-4 fixed top-0 left-0 w-full z-50 h-[90px] ">
+    <nav className="text-white px-6 py-4 fixed top-0 left-0 w-full z-50 h-[90px] bg-[#0f1319] ">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold">
@@ -105,11 +140,19 @@ const Navbar = () => {
               Login
             </Button>
           </Link> */}
-          <Link to="/signup">
-            <Button color="dark" className="px-4 py-2">
+            <SignedOut>
+                {/* This will trigger Clerk's sign-in modal */}
+                <SignInButton mode="modal">
+                <Button color="dark" className="px-4 py-2 outline-none">
               Sign Up
             </Button>
-          </Link>
+                </SignInButton>
+              </SignedOut>
+
+              <SignedIn>
+                <UserButton afterSignOutUrl="/"  style={{ width: "80px", height: "80px" }}/>
+              </SignedIn>
+          
         </div>
       </div>
     </nav>
