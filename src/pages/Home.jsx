@@ -5,6 +5,7 @@ import { Button } from "flowbite-react";
 import Globe from "../components/Globe";
 import { FaHeart, FaReply } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import framer-motion
+import RotatingEarth from "../components/Rotating_Earth";
 
 // Fade-in and slide-up animation variant
 const fadeInUp = {
@@ -87,7 +88,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen text-white">
-      <Globe />
+      <RotatingEarth />
 
       <motion.header
         className="flex flex-col items-center justify-center text-center mt-40 pt-50 px-4 sm:px-8"

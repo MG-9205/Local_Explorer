@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FaMapSigns, FaUsers, FaBullseye } from "react-icons/fa";
 import Globe from "../components/Globe";
+import RotatingEarth from "../components/Rotating_Earth";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 50 },
@@ -12,7 +13,7 @@ const fadeInUp = {
 const AboutPage = () => {
   return (
     <div className="min-h-screen text-white p-8">
-      <Globe />
+      <RotatingEarth />
       <motion.h1
         className="text-4xl font-bold text-center mb-12"
         initial={{ opacity: 0, y: -50 }}

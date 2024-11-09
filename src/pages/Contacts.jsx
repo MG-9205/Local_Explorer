@@ -3,6 +3,7 @@ import { Button } from "flowbite-react";
 import { motion } from "framer-motion";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import Globe from "../components/Globe";
+import RotatingEarth from "../components/Rotating_Earth";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 50 },
@@ -12,7 +13,7 @@ const fadeInUp = {
 const ContactPage = () => {
   return (
     <div className="min-h-screen text-white p-8">
-      <Globe />
+      <RotatingEarth />
       <motion.h1
         className="text-4xl font-bold text-center mb-12"
         initial={{ opacity: 0, y: -50 }}
@@ -96,7 +97,7 @@ const ContactPage = () => {
             },
             {
               icon: <FaEnvelope className="text-blue-400 mr-4" />,
-              text: "Devlopers@localexplorer.com",
+              text: "viraj180201@gmail.com",
             },
             {
               icon: <FaMapMarkerAlt className="text-blue-400 mr-4" />,
