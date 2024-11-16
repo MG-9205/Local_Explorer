@@ -1,17 +1,18 @@
 import "./App.css";
-// import React, { Suspense } from "react";
+
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import { RecoilRoot } from "recoil";
+import { Provider } from "react-redux";
+import store from "./store";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
 import About from "./pages/About";
 import Explore from "./pages/Explore";
 import Contacts from "./pages/Contacts";
+import ImagePage from "./pages/ImagePage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// const Loader = () => <div>Loading...</div>;
-
+const queryClient = new QueryClient();
 const Main = () => {
   return (
     <>
@@ -32,10 +33,6 @@ const route = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/Sign-in",
-        element: <SignIn />,
-      },
-      {
         path: "/About",
         element: <About />,
       },
@@ -46,7 +43,10 @@ const route = createBrowserRouter([
       {
         path: "/Contacts",
         element: <Contacts />,
-      },
+      },{
+        path: "/ImagePage",
+        element: <ImagePage />,
+      }
     ],
   },
 ]);
@@ -54,9 +54,11 @@ const route = createBrowserRouter([
 function App() {
   return (
     <>
-      <RecoilRoot>
-        <RouterProvider router={route} />
-      </RecoilRoot>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <RouterProvider router={route} />
+        </Provider>
+      </QueryClientProvider>
     </>
   );
 }

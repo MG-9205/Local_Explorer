@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import { TileLayer, MapContainer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-import osm from "../osm_provider"
+import osm from "../Service/osm_provider"
 import 'leaflet/dist/leaflet.css';
+import { setSelectedPosition } from '../store/searchSlice';
 
-// Custom divIcon for the current location marker
+
 const currentLocationIcon = L.divIcon({
   className: 'custom-marker',
   html: '<div class="circle-marker"></div>',
   iconSize: [20, 20],
-  iconAnchor: [10, 10], // Center the marker
+  iconAnchor: [10, 10],
   popupAnchor: [0, -10],
 });
 
-// Routing component to handle adding route between two points
+
 function Routing({ currentPosition, selectedPosition }) {
-  const map = useMap(); // Use the existing map instance from react-leaflet
+  const map = useMap(); 
 
   useEffect(() => {
     if (!map) return;
@@ -29,23 +31,23 @@ function Routing({ currentPosition, selectedPosition }) {
         ],
         lineOptions: {
           styles: [{ color: 'blue', weight: 4 }],
-          addWaypoints: false, // Disable the ability to add new waypoints
+          addWaypoints: false, 
         },
-        createMarker: () => null, // Disable markers for waypoints
-        routeWhileDragging: false, // Disable dragging of waypoints
-        draggableWaypoints: false, // Make the waypoints not draggable
-        fitSelectedRoutes: true, // Fit the map to the route
-        show: false, // Do not show the routing instructions
+        createMarker: () => null, 
+        routeWhileDragging: false, 
+        draggableWaypoints: false, 
+        fitSelectedRoutes: true, 
+        show: false, 
 
-        // Prevent default routing instruction container
+       
         router: L.Routing.osrmv1({ showAlternatives: false }),
       }).on('routesfound', (e) => {
-        // Remove any existing instructions
+        
         map.getContainer().querySelectorAll('.leaflet-routing-container').forEach((el) => el.remove());
       }).addTo(map);
 
       return () => {
-        map.removeControl(routingControl); // Cleanup on unmount or when positions change
+        map.removeControl(routingControl); 
       };
     }
   }, [map, currentPosition, selectedPosition]);
@@ -56,14 +58,17 @@ function Routing({ currentPosition, selectedPosition }) {
 
 
 export default function MapComponent() {
-  const [center, setCenter] = useState({ lat: 28.6139, lng: 77.209 }); // Default center
-  const [currentPosition, setCurrentPosition] = useState(null); // User's current position
-  const zoomLevel = 12;
+  const dispatch = useDispatch();
+  const [center, setCenter] = useState({ lat: 28.6139, lng: 77.209 });
+  const searchResults = useSelector((state) => state.search.results);
+  const Results = useSelector((state) => state.search.selectedPosition);
+  const [currentPosition, setCurrentPosition] = useState(null); 
+  const zoomLevel = 9;
 
-  // Static position for selected marker (example: India Gate in New Delhi)
+
   const selectedPosition = [28.613048441502126, 77.2296412002021];
 
-  // Get user's current location
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -86,15 +91,55 @@ export default function MapComponent() {
     }
   }, []);
 
+  const redirectToGoogleMaps = (place) => {
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}&travelmode=driving`;
+    window.open(googleMapsUrl, '_blank'); 
+  };
+
   return (
     <div className='max-w-[100vw] max-h-[100vh] z-0'>
       <MapContainer center={center} zoom={zoomLevel} className="h-[100vh] w-[100vw] z-0">
         <TileLayer url={osm.maptiler.url} attribution={osm.maptiler.attribution} />
 
-        {/* Selected marker (static) */}
-        <Marker position={selectedPosition}>
-          <Popup>Selected Location: India Gate</Popup>
-        </Marker>
+     
+        {searchResults.map((place) => (
+          <Marker
+            key={place.id} 
+            position={[place.latitude, place.longitude]}
+            eventHandlers={{
+              click: () => {
+                dispatch(setSelectedPosition(place));
+                console.log("Selected Position:", place);
+              },
+            }}
+          >
+             <Popup>
+              <div className="flex flex-col">
+                {/* Image of the place */}
+                {place.perImage && (
+                  <img
+                    src={place.perImage}
+                    alt={place.name}
+                    className="w-full h-32 object-cover rounded-md mb-1"
+                  />
+                )}
+
+               
+                <h4 className="font-bold text-lg">{place.name}</h4>
+
+                
+
+               
+                <button
+                  onClick={() => redirectToGoogleMaps(place)}
+                  className="mt-1 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                >
+                  Get Directions
+                </button>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
 
         {/* User's current location marker */}
         {currentPosition && (
@@ -103,10 +148,10 @@ export default function MapComponent() {
           </Marker>
         )}
 
-        {/* Routing: Add route between current location and selected location */}
+        {/* Routing: Add route between current location and selected location 
         {currentPosition && (
           <Routing currentPosition={currentPosition} selectedPosition={selectedPosition} />
-        )}
+        )}*/}
       </MapContainer>
     </div>
   );

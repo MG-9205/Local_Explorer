@@ -13,14 +13,14 @@ const RotatingEarth = () => {
       1000
     );
 
-    // Initial camera position and earth size
+  
     const setCameraAndEarthSize = () => {
       if (window.innerWidth < 768) {
-        camera.position.z = 3; // Smaller distance for smaller screens
-        sphere.scale.set(0.7, 0.7, 0.7); // Smaller earth scale
+        camera.position.z = 3; 
+        sphere.scale.set(0.7, 0.7, 0.7); 
       } else {
-        camera.position.z = 5; // Default distance
-        sphere.scale.set(1, 1, 1); // Default earth scale
+        camera.position.z = 5; 
+        sphere.scale.set(1, 1, 1); 
       }
     };
 
@@ -39,7 +39,7 @@ const RotatingEarth = () => {
     const sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
-    // Set initial size and camera distance based on screen width
+   
     setCameraAndEarthSize();
 
     const animate = () => {
@@ -49,7 +49,7 @@ const RotatingEarth = () => {
     };
     animate();
 
-    // Update renderer and camera on resize
+
     const handleResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -59,7 +59,7 @@ const RotatingEarth = () => {
 
     window.addEventListener("resize", handleResize);
 
-    // Cleanup function
+  
     return () => {
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);

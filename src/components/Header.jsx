@@ -13,12 +13,12 @@ const Navbar = () => {
         clerkId: user.id,
         email: user.emailAddresses[0].emailAddress, 
       };
-console.log(userData)
       try {
-        const response = await fetch('http://127.0.0.1:8787/users', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+             'API-Key':`${import.meta.env.VITE_VALID_API_KEYS}`
           },
           body: JSON.stringify(userData),
         });
@@ -133,15 +133,10 @@ console.log(userData)
           </Link>
         </div>
 
-        {/* Buttons */}
         <div className="flex space-x-4">
-          {/* <Link to="/login">
-            <Button color="light" className="px-4 py-2">
-              Login
-            </Button>
-          </Link> */}
+       
             <SignedOut>
-                {/* This will trigger Clerk's sign-in modal */}
+               
                 <SignInButton mode="modal">
                 <Button color="dark" className="px-4 py-2 outline-none">
               Sign Up

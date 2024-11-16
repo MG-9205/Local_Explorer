@@ -1,27 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSearchResults } from '../../store/searchSlice';
+
+// Debounce function to limit the frequency of API calls
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler); // Clear timeout on cleanup
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
 
 function SearchBar({ onPlaceSelect }) {
   const [query, setQuery] = useState('');
+  const [showSuggestion, setShowSuggestion] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
+  const dispatch=useDispatch();
+  
+  // Use debouncing to delay the API call
+  const debouncedQuery = useDebounce(query, 500); // 500ms delay
 
   const fetchSuggestions = async (searchText) => {
-    const response = await fetch(
-      `https://api.maptiler.com/geocoding/${searchText}.json?key=${import.meta.env.VITE_MAPTILER_KEY}`
-    );
-    const data = await response.json();
-    setSuggestions(data.features);
-  };
+    if (searchText.length > 2) { 
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/places/placeName/${searchText}`,{
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json',
+            'API-Key':`${import.meta.env.VITE_VALID_API_KEYS}`
+           }});
+        const data = await response.json();
+        
+        setSuggestions(data);
 
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    if (value.length > 2) {
-      fetchSuggestions(value); // Fetch suggestions if input length > 2
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+      }
     } else {
-      setSuggestions([]);
+      setSuggestions([]); 
     }
   };
 
+  useEffect(() => {
+    if (debouncedQuery) { 
+      fetchSuggestions(debouncedQuery); 
+    } else {
+      setSuggestions([]); 
+    }
+  }, [debouncedQuery]);
+
+  const handleInputChange = (e) => {
+    setQuery(e.target.value);
+    setShowSuggestion(true)
+   
+  };
+  const handlePlaceSelect = (place) => {
+   
+    dispatch(setSearchResults([place])); 
+    setQuery(place.name);  
+    onPlaceSelect(place);
+    setShowSuggestion(false)
+    setSuggestions([]);  
+  };
+ 
   return (
     <div>
       <input
@@ -31,17 +79,19 @@ function SearchBar({ onPlaceSelect }) {
         onChange={handleInputChange}
         className="w-full p-2 mb-4 border border-gray-300 rounded"
       />
-      <ul>
-        {suggestions.map((place) => (
-          <li
-            key={place.id}
-            onClick={() => onPlaceSelect(place.geometry.coordinates)}
-            style={{ cursor: 'pointer', padding: '5px', backgroundColor: '#f0f0f0', margin: '2px 0' }}
-          >
-            {place.place_name}
-          </li>
-        ))}
-      </ul>
+      {suggestions.length > 0 && (
+        <ul>
+          {showSuggestion && suggestions.map((place) => (
+            <li
+              key={place.id}
+              onClick={() => handlePlaceSelect(place)}
+              className="cursor-pointer p-1.5 bg-gray-100 text-black mb-0.5"
+            >
+              {place.name}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
