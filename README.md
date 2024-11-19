@@ -34,19 +34,19 @@
 2. Install dependencies:
    ```
     npm install
-   
-4. Set up environment variables:
+  
+3. Set up environment variables:
    ```
    Create a .env file in the root directory with the following variables:
    DATABASE_URL=your_database_url
    DIRECT_URL=your_direct_url
    MAP_API_KEY=your_map_api_key
 
-6. Run database migrations:
+4. Run database migrations:
    ```
    npx prisma migrate dev
    
-8. Start the server:
+5. Start the server:
    ```
    npm start
 
@@ -65,6 +65,6 @@ local-explorer/
 └── README.md         # Project documentation
 
 ```
-9. Backend Code Link:
+6. Backend Code Link:
 ```
 https://github.com/MG-9205/Local-Explorer-backend.git   
