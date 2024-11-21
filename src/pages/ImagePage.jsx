@@ -126,27 +126,27 @@ const ImagePage = () => {
 
       {/* Modal for displaying large image */}
       {modalOpen && selectedImage && (
-        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 z-50">
-          <div className="relative max-w-4xl w-full p-6 bg-hidden rounded-lg shadow-lg">
-            <button
-              className="absolute mt-10 transform translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full text-2xl text-black flex justify-center items-center font-bold"
-              onClick={closeModal}
-            >
-              &times;
-            </button>
-            <img
-              src={selectedImage.url}
-              alt={selectedImage.place.name}
-              className="w-full h-auto rounded-lg"
-            />
-            <h3 className="mt-4 text-lg font-semibold text-center">
-              {selectedImage.place.name}
-            </h3>
-            <p className="text-center text-sm">{selectedImage.place.name}</p>
-           
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-75 z-50">
+    <div className="relative max-w-4xl w-full p-6 bg-hidden rounded-lg shadow-lg">
+      <button
+        className="absolute mt-10 transform translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full text-2xl text-black flex justify-center items-center font-bold"
+        onClick={closeModal}
+      >
+        &times;
+      </button>
+      <img
+        src={selectedImage.url}
+        alt={selectedImage.place.name}
+        className="w-full max-w-[90vw] max-h-[80vh] object-contain rounded-lg"
+      />
+      <h3 className="mt-4 text-lg font-semibold text-center">
+        {selectedImage.place.name}
+      </h3>
+      <p className="text-center text-sm">{selectedImage.place.name}</p>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

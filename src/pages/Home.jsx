@@ -108,9 +108,9 @@ const HomePage = () => {
               Explore Now
             </Button>
           </Link>
-          <Link to="/signup">
+          <Link to="/ImagePage">
             <Button color="dark" className="px-6 py-3">
-              Get Started
+             Image Gallery
             </Button>
           </Link>
         </div>
