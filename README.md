@@ -16,7 +16,11 @@
 - **Backend**: Node.js, Express.js  
 - **Database**: PostgreSQL with Prisma ORM  
 - **Map Integration**: OpenStreetMap and Google Maps API  
-- **3D Visualization**: Three.js for interactive elements  
+- **3D Visualization**: Three.js for interactive elements
+
+## Webapp Showcase
+
+[![Watch the video](https://img.youtube.com/vi/rkubqubrqo8/0.jpg)](https://www.youtube.com/watch?v=rkubqubrqo8)
 
 ## Installation  
 
